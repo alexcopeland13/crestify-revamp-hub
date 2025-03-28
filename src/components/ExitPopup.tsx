@@ -12,19 +12,40 @@ const ExitPopup = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Check if popup has been shown in this session
     let popupShown = sessionStorage.getItem('exitPopupShown');
     
-    if (popupShown !== 'true') {
-      const handleMouseLeave = (e: MouseEvent) => {
-        if (e.clientY <= 0 && !popupShown) {
-          setShowPopup(true);
-          sessionStorage.setItem('exitPopupShown', 'true');
-        }
-      };
-      
-      document.addEventListener('mouseleave', handleMouseLeave);
+    // Check if popup has been shown in the last week (using localStorage for persistence)
+    const lastShown = localStorage.getItem('exitPopupLastShown');
+    const currentTime = new Date().getTime();
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+    
+    // Only show popup if:
+    // 1. It hasn't been shown in this session AND
+    // 2. Either it's never been shown before OR it was last shown more than a week ago
+    const shouldShowPopup = !popupShown && 
+      (!lastShown || (currentTime - parseInt(lastShown)) > oneWeekInMs);
+    
+    if (shouldShowPopup) {
+      // Add a delay before tracking mouse movement to prevent immediate triggering
+      const timeout = setTimeout(() => {
+        const handleMouseLeave = (e: MouseEvent) => {
+          // Only trigger when mouse moves above the top edge of the viewport
+          if (e.clientY <= 0) {
+            setShowPopup(true);
+            sessionStorage.setItem('exitPopupShown', 'true');
+            localStorage.setItem('exitPopupLastShown', currentTime.toString());
+            
+            // Remove the event listener after showing the popup
+            document.removeEventListener('mouseleave', handleMouseLeave);
+          }
+        };
+        
+        document.addEventListener('mouseleave', handleMouseLeave);
+      }, 10000); // Wait 10 seconds before enabling the exit detection
       
       return () => {
+        clearTimeout(timeout);
         document.removeEventListener('mouseleave', handleMouseLeave);
       };
     }
