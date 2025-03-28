@@ -7,29 +7,53 @@ const examples = [
     type: 'Local Restaurant',
     testimonial: '"Our reservations increased by 40% in the first month after switching to our new website."',
     name: 'Maria G., Bistro Owner',
-    before: 'https://placehold.co/600x400/e5e5e5/8E8E8E?text=Old+Restaurant+Website',
-    after: 'https://placehold.co/600x400/f8f8f8/22C55E?text=New+Restaurant+Website'
+    before: '/restaurant-before.jpg',
+    after: '/restaurant-after.jpg',
+    improvements: [
+      'Mobile-responsive menu',
+      'Online reservation system',
+      'Photo gallery integration',
+      'SEO optimization for local searches'
+    ]
   },
   {
     type: 'Dental Practice',
     testimonial: '"Patients constantly tell us how easy it is to book appointments now. Best investment we\'ve made."',
     name: 'Dr. James W., Family Dentist',
-    before: 'https://placehold.co/600x400/e5e5e5/8E8E8E?text=Old+Dental+Website',
-    after: 'https://placehold.co/600x400/f8f8f8/22C55E?text=New+Dental+Website'
+    before: '/dental-before.jpg',
+    after: '/dental-after.jpg',
+    improvements: [
+      'Online appointment scheduling',
+      'Patient testimonial showcase',
+      'Service catalog with clear pricing',
+      'Integration with insurance providers'
+    ]
   },
   {
     type: 'Auto Repair Shop',
     testimonial: '"We look more professional than our competitors now. The new site has already paid for itself."',
     name: 'Robert L., Shop Owner',
-    before: 'https://placehold.co/600x400/e5e5e5/8E8E8E?text=Old+Auto+Shop+Website',
-    after: 'https://placehold.co/600x400/f8f8f8/22C55E?text=New+Auto+Shop+Website'
+    before: '/auto-before.jpg',
+    after: '/auto-after.jpg',
+    improvements: [
+      'Service appointment scheduling',
+      'Customer review integration',
+      'Mobile service estimator',
+      'Streamlined contact process'
+    ]
   },
   {
     type: 'Hair Salon',
     testimonial: '"Our new website perfectly represents our brand. We\'ve seen a 30% increase in new clients."',
     name: 'Lisa T., Salon Owner',
-    before: 'https://placehold.co/600x400/e5e5e5/8E8E8E?text=Old+Salon+Website',
-    after: 'https://placehold.co/600x400/f8f8f8/22C55E?text=New+Salon+Website'
+    before: '/salon-before.jpg',
+    after: '/salon-after.jpg',
+    improvements: [
+      'Stylist profile showcase',
+      'Online booking system',
+      'Portfolio image gallery',
+      'Integrated review system'
+    ]
   }
 ];
 
@@ -42,6 +66,16 @@ const Gallery = () => {
     const form = document.getElementById('lead-form');
     if (form) {
       form.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Function to generate fallback if images aren't available
+  const getFallbackImage = (type, isAfter) => {
+    // Create different styled fallbacks for before/after
+    if (isAfter) {
+      return `https://placehold.co/800x500/f8f8f8/22C55E?text=Modern+${type}+Website`;
+    } else {
+      return `https://placehold.co/800x500/e5e5e5/8E8E8E?text=Outdated+${type}+Website`;
     }
   };
 
@@ -73,48 +107,40 @@ const Gallery = () => {
                 <div className="space-y-2">
                   <h4 className="font-semibold text-crest-darkGray">Key Improvements:</h4>
                   <ul className="space-y-1">
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-crest-blue mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                      </svg>
-                      <span>Mobile-responsive design</span>
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-crest-blue mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                      </svg>
-                      <span>Faster loading time</span>
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-crest-blue mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                      </svg>
-                      <span>Modern aesthetic</span>
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-crest-blue mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                      </svg>
-                      <span>Improved user experience</span>
-                    </li>
+                    {example.improvements.map((improvement, i) => (
+                      <li key={i} className="flex items-start">
+                        <svg className="w-5 h-5 text-crest-blue mr-2 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                        </svg>
+                        <span>{improvement}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
               <div className={`space-y-4 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
-                <div className="before-image">
+                <div className="before-image relative">
                   <div className="absolute top-2 left-2 bg-crest-before text-white text-xs px-2 py-1 rounded">BEFORE</div>
                   <img 
-                    src={example.before} 
+                    src={getFallbackImage(example.type.split(' ')[1], false)} 
                     alt={`${example.type} before website`} 
                     className="w-full h-auto rounded"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = getFallbackImage(example.type.split(' ')[1], false);
+                    }}
                   />
                 </div>
-                <div className="after-image">
+                <div className="after-image relative">
                   <div className="absolute top-2 left-2 bg-crest-after text-white text-xs px-2 py-1 rounded">AFTER</div>
                   <img 
-                    src={example.after} 
-                    alt={`${example.type} after website`} 
+                    src={getFallbackImage(example.type.split(' ')[1], true)} 
+                    alt={`${example.type} after website`}
                     className="w-full h-auto rounded"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = getFallbackImage(example.type.split(' ')[1], true);
+                    }}
                   />
                 </div>
               </div>
