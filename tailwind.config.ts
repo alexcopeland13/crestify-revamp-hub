@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+        crest: {
+          blue: '#1E63E9',
+          darkBlue: '#0A48C2',
+          lightBlue: '#4B8AF5',
+          gray: '#F0F4F8',
+          darkGray: '#2D3748',
+          before: '#8E8E8E',
+          after: '#22C55E'
+        }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +94,37 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(10px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'slide-in': {
+          '0%': {
+            transform: 'translateX(-100%)',
+            opacity: '0'
+          },
+          '100%': {
+            transform: 'translateX(0)',
+            opacity: '1'
+          }
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fade-in 0.5s ease-out forwards',
+        'slide-in': 'slide-in 0.6s ease-out forwards'
+			},
+      fontFamily: {
+        'sans': ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
