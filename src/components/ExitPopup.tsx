@@ -27,20 +27,21 @@ const ExitPopup = () => {
       (!lastShown || (currentTime - parseInt(lastShown)) > oneWeekInMs);
     
     if (shouldShowPopup) {
+      // Define handleMouseLeave outside the setTimeout to make it accessible in the cleanup function
+      const handleMouseLeave = (e: MouseEvent) => {
+        // Only trigger when mouse moves above the top edge of the viewport
+        if (e.clientY <= 0) {
+          setShowPopup(true);
+          sessionStorage.setItem('exitPopupShown', 'true');
+          localStorage.setItem('exitPopupLastShown', currentTime.toString());
+          
+          // Remove the event listener after showing the popup
+          document.removeEventListener('mouseleave', handleMouseLeave);
+        }
+      };
+      
       // Add a delay before tracking mouse movement to prevent immediate triggering
       const timeout = setTimeout(() => {
-        const handleMouseLeave = (e: MouseEvent) => {
-          // Only trigger when mouse moves above the top edge of the viewport
-          if (e.clientY <= 0) {
-            setShowPopup(true);
-            sessionStorage.setItem('exitPopupShown', 'true');
-            localStorage.setItem('exitPopupLastShown', currentTime.toString());
-            
-            // Remove the event listener after showing the popup
-            document.removeEventListener('mouseleave', handleMouseLeave);
-          }
-        };
-        
         document.addEventListener('mouseleave', handleMouseLeave);
       }, 10000); // Wait 10 seconds before enabling the exit detection
       
